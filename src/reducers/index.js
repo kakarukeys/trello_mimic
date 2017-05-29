@@ -1,8 +1,12 @@
-import { combineReducers } from 'redux';
-import {routerReducer} from 'react-router-redux';
+import { combineReducers } from 'redux-immutable';
+
+import epic from './epicReducer';
+import routing from './routerReducer';
+
 
 const rootReducer = combineReducers({
-  routing: routerReducer
+  epic,
+  routing,
 });
 
 export default rootReducer;
