@@ -4,6 +4,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Dragula from 'react-dragula';
+
+import * as actions from '../../actions/epicActions';
+import TextInput from '../common/TextInput';
 import Column from './Column';
 import Counter from './Counter';
 
@@ -11,8 +15,26 @@ import '../../styles/trello/board.scss';
 
 
 class Board extends Component {
+  constructor(props) {
+    super(props);
+
+    this.drake = Dragula();
+    this.drake.on("drop", (...args) => {
+      this.drake.cancel(true);  // don't use Dragula to modify the DOM
+      props.moveProject(...args.map(el => el && el.id.split('-')[1]));
+    });
+
+    this.makeDraggable = this.makeDraggable.bind(this);
+  }
+
+  makeDraggable(el) {
+    if (el) {
+      this.drake.containers.push(el);
+    }
+  }
+
   render() {
-    let { stages } = this.props,
+    let { stages, addProject } = this.props,
         totalCount = stages.reduce((p, stage) => p + stage.get("projects").size, 0);
 
     return (
@@ -23,7 +45,7 @@ class Board extends Component {
               <div className="form-group row">
                 <label htmlFor="new_project" className="col-lg-3 col-form-label">add project</label>
                 <div className="col-lg-6">
-                  <input className="form-control" type="text" id="new_project" name="new_project" />
+                  <TextInput onEnter={ (text) => text ? addProject(text) : null } />
                 </div>
               </div>
             </form>
@@ -52,7 +74,7 @@ Board.propTypes = {
 
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators(actions, dispatch);
 }
 
 function mapStateToProps(state) {

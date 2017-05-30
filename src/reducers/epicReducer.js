@@ -10,7 +10,7 @@ const PROJECT_ENTRY_STAGE_ID = "1";
 
 export default function (state = initialState.epic, action) {
   switch (action.type) {
-    case actionTypes.ADD_PROJECT:
+    case actionTypes.ADD_PROJECT: {
       let {title} = action.payload,
           newProject = new Project({id: uuidV1(), title});
 
@@ -19,8 +19,8 @@ export default function (state = initialState.epic, action) {
         ["stages", PROJECT_ENTRY_STAGE_ID, "projects"],
         projects => projects.push(newProject)
       );
-
-    case actionTypes.MOVE_PROJECT:
+    }
+    case actionTypes.MOVE_PROJECT: {
       let {sourceStageId, targetStageId, projectId, startBeforeProjectId} = action.payload,
           project;
 
@@ -40,7 +40,7 @@ export default function (state = initialState.epic, action) {
           return projects.push(project);
         }
       });
-
+    }
     default:
       return state;
   }

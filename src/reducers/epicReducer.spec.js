@@ -34,7 +34,7 @@ describe("Reducers::epicReducer", function () {
         projects: List()
       })
     })});
-  };
+  }
 
   it("should handle ADD_PROJECT", function () {
     let action = {type: actionTypes.ADD_PROJECT, payload: {title: "build a house"}};

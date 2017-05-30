@@ -22,7 +22,10 @@ class Column extends Component {
           <div className="col-lg-5"><Counter num={projects.size} /></div>
         </div>
         <div id={"column-" + id} className="content" ref={onRef || function() {}}>
-          { projects.map(p => <Card key={p.get("id")} {...p.toObject()} />) }
+          { projects.size ? 
+            projects.map(p => <Card key={p.get("id")} {...p.toObject()} />) :
+            <p>~ It's empty here ~</p>
+          }
         </div>
       </section>
     );
