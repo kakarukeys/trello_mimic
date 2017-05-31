@@ -34,9 +34,9 @@ class TextInput extends Component {
       <input 
         type="text" 
         className="form-control"
-        value={ this.state.text } 
-        onChange={ this.handleChange }
-        onKeyDown={ onEnter ? this.handleKeyDown : function () {} } />
+        value={this.state.text} 
+        onChange={this.handleChange}
+        onKeyDown={onEnter ? this.handleKeyDown : function () {}} />
     );
   }
 }

@@ -14,6 +14,11 @@ import Counter from './Counter';
 import '../../styles/trello/board.scss';
 
 
+function recoverObjId(elementId) {
+  /* 'card-12-13' -> '12-13' */
+  return elementId.slice(elementId.indexOf('-') + 1);
+}
+
 class Board extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +26,7 @@ class Board extends Component {
     this.drake = Dragula();
     this.drake.on("drop", (...args) => {
       this.drake.cancel(true);  // don't use Dragula to modify the DOM
-      props.moveProject(...args.map(el => el && el.id.split('-')[1]));
+      props.moveProject(...args.map(el => el && recoverObjId(el.id)));
     });
 
     this.makeDraggable = this.makeDraggable.bind(this);
@@ -45,7 +50,7 @@ class Board extends Component {
               <div className="form-group row">
                 <label htmlFor="new_project" className="col-lg-3 col-form-label">add project</label>
                 <div className="col-lg-6">
-                  <TextInput onEnter={ (text) => text ? addProject(text) : null } />
+                  <TextInput onEnter={(text) => text ? addProject(text) : null} />
                 </div>
               </div>
             </form>
@@ -69,7 +74,9 @@ Board.propTypes = {
   stages: ImmutablePropTypes.orderedMapOf(
     ImmutablePropTypes.map,
     PropTypes.string
-  ).isRequired
+  ).isRequired,
+  addProject: PropTypes.func,
+  moveProject: PropTypes.func
 };
 
 
